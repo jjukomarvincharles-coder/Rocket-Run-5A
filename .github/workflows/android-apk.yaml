@@ -1,0 +1,38 @@
+name: Build Android APK
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - run: npm install
+      - name: Build the game from /src
+        run: node tools/build.js
+      - name: Bundle Three.js locally (offline support)
+        run: node tools/vendor-three.js
+      - run: npx cap add android
+      - name: App icon + splash from /assets (the launch picture)
+        run: npx @capacitor/assets generate --android --iconBackgroundColor '#010b15' --splashBackgroundColor '#010b15'
+      - name: Landscape + vibration permission
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:configChanges=/android:screenOrientation="sensorLandscape" android:configChanges=/' $M
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.VIBRATE" />\n</manifest>#' $M
+          S=android/app/src/main/res/values/styles.xml
+          sed -i '/<style name="AppTheme.NoActionBar"/a \        <item name="android:windowFullscreen">true</item>\n        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>' $S
+      - run: npx cap sync android
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rocket-run-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
