@@ -1,0 +1,7 @@
+{
+  "appId": "com.rocketrun.omniverse",
+  "appName": "Rocket Run",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "backgroundColor": "#02040c"
+}

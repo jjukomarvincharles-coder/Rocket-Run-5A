@@ -1,0 +1,52 @@
+/* ===== SCREENS FIT: scroll instead of clipping, compact on small landscape phones ===== */
+html,body{background:#01060f;}
+#overlay{align-items:flex-start;justify-content:center;backdrop-filter:none;-webkit-backdrop-filter:none;overscroll-behavior:contain;
+  background:radial-gradient(ellipse at 50% 45%,rgba(6,18,40,.86),rgba(0,2,8,.97));}
+.screen{margin:auto;max-width:100%;}
+@media (max-height:480px){
+ #overlay{padding:calc(6px + var(--safe-t)) calc(10px + var(--safe-r)) calc(6px + var(--safe-b)) calc(10px + var(--safe-l));}
+ .screen{gap:7px;padding:0 0 8px;width:min(980px,100%);}
+ .title{font-size:clamp(22px,9vh,38px);letter-spacing:7px;} .title span{letter-spacing:11px;}
+ .subtitle{font-size:9px;letter-spacing:3px;}
+ .btn{min-width:130px;padding:7px 14px;font-size:10.5px;letter-spacing:1.8px;}
+ .row{gap:8px;flex-wrap:wrap;justify-content:center;}
+ .section-title{font-size:clamp(15px,5.2vh,22px);letter-spacing:5px;}
+}
+@media (max-height:340px){
+ .btn{padding:6px 10px;font-size:10px;min-width:110px;} .title{font-size:clamp(20px,8vh,30px);}
+}
+/* ===== exit confirmation ===== */
+#exitDlg{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(0,4,12,.72);}
+#exitDlg.on{display:flex;}
+.exit-card{width:min(86vw,420px);padding:18px 20px 16px;text-align:center;font-family:'Orbitron',monospace;color:#cfeef7;
+  background:linear-gradient(180deg,rgba(10,34,62,.97),rgba(3,12,26,.97));border:1px solid rgba(58,233,255,.55);box-shadow:0 0 30px rgba(58,233,255,.25);}
+.exit-title{font-size:clamp(14px,3.6vh,20px);font-weight:900;letter-spacing:4px;color:#fff;text-shadow:0 0 14px rgba(58,233,255,.8);}
+.exit-sub{margin:8px 0 14px;font-size:10px;letter-spacing:3px;opacity:.7;}
+.exit-row{display:flex;gap:12px;justify-content:center;}
+.exit-row button{flex:1;max-width:160px;padding:10px 0;font:inherit;font-weight:700;font-size:12px;letter-spacing:3px;color:#d8f6ff;cursor:pointer;
+  background:rgba(8,34,60,.9);border:1px solid rgba(58,233,255,.5);}
+#exitStay{background:linear-gradient(180deg,#43dcff,#1b9fd0);color:#02121a;border-color:#7ef2ff;}
+@media (max-height:480px){
+ .menu-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;}
+ .rocket-list{grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:7px;}
+ .stats-grid{grid-template-columns:repeat(4,1fr);gap:6px;} .stat-box .v{font-size:15px;margin-top:2px;} .stat-box .k{font-size:8px;letter-spacing:1.6px;}
+ .route-list{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px;}
+ .journal-grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;}
+ .station-actions{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:7px;margin-top:6px;}
+ .hof-grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;}
+ .card{padding:9px 11px;} .card h3{margin-bottom:5px;font-size:11px;letter-spacing:2px;}
+ .audio-control{margin:4px 0;grid-template-columns:104px 1fr 36px;gap:7px;font-size:10px;}
+ .lb-row{padding:4px 4px;font-size:11px;}
+ .mode-card .mn{font-size:12px;letter-spacing:2px;} .mode-card .md{font-size:10px;}
+}
+/* on-screen back button for every menu screen (hardware back / Esc do the same) */
+#navBack{position:fixed;z-index:41;top:calc(8px + var(--safe-t));left:calc(10px + var(--safe-l));display:none;padding:7px 14px 7px 10px;
+  font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:#cfeef7;cursor:pointer;
+  background:rgba(6,26,48,.88);border:1px solid rgba(58,233,255,.5);clip-path:polygon(0 50%,10px 0,100% 0,100% 100%,10px 100%);}
+#navBack.on{display:block;}
+/* flight plan: two columns on short screens so the LAUNCH button is always on screen */
+@media (max-height:480px){
+ .card > .jentry:first-of-type{margin-top:0;}
+ .card:has(.jentry){columns:2;column-gap:14px;} .card:has(.jentry) h3{column-span:all;}
+ .jentry{padding:3px 0;break-inside:avoid;font-size:11px;}
+}

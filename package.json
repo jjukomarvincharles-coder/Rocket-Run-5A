@@ -1,0 +1,20 @@
+{
+  "name": "rocket-run",
+  "version": "10.0.0",
+  "private": true,
+  "description": "Rocket Run - cinematic 3D space survival (web + Android via Capacitor)",
+  "scripts": {
+    "build": "node tools/build.js",
+    "vendor": "node tools/vendor-three.js"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "three": "0.160.0",
+    "@capacitor/app": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/assets": "^3.0.5"
+  }
+}

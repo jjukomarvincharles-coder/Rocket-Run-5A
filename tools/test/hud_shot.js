@@ -1,0 +1,12 @@
+const {chromium}=require('/opt/npm-tools/node_modules/playwright'); const fs=require('fs'); const file=process.argv[2]; const stub=fs.readFileSync('/home/claude/harness/three_stub.mjs','utf8');
+(async()=>{const b=await chromium.launch(); const p=await b.newPage({viewport:{width:800,height:360}});
+await p.route('**/*',r=>{const u=r.request().url();
+ if(u.includes('three.module.js')) return r.fulfill({contentType:'application/javascript',body:stub});
+ if(u.includes('EffectComposer.js')) return r.fulfill({contentType:'application/javascript',body:'export class EffectComposer{constructor(r){this.passes=[];this.renderTarget1={samples:0,dispose(){}};this.renderTarget2={samples:0,dispose(){}};this.readBuffer={texture:{}};} addPass(p){this.passes.push(p);} render(){} setSize(){} dispose(){}}'});
+ if(u.includes('RenderPass.js')) return r.fulfill({contentType:'application/javascript',body:'export class RenderPass{constructor(s,c){}}'});
+ if(u.includes('UnrealBloomPass.js')) return r.fulfill({contentType:'application/javascript',body:'export class UnrealBloomPass{constructor(){} setSize(){}}'});
+ if(u.startsWith('file:')||u.startsWith('data:')||u.startsWith('blob:')) return r.continue(); return r.abort();});
+await p.goto('file://'+file); await p.waitForTimeout(800); await (await p.$('text=LAUNCH')).click(); await p.waitForTimeout(400); await (await p.$('#overlay >> text=/^LAUNCH$/')).click(); await p.waitForTimeout(1800);
+await p.evaluate(()=>{ document.body.style.background='radial-gradient(ellipse at 60% 30%,#2a1a5a,#050818 60%)'; document.getElementById('game').style.display='none'; });
+await p.click('#btnShield',{force:true}).catch(()=>{}); await p.waitForTimeout(500);
+await p.screenshot({path:'/home/claude/harness/hud_bars.png'}); await b.close();})();
